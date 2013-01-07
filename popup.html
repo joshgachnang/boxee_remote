@@ -9,23 +9,12 @@
     </head>
     <body  id="body">
     <!--     <h1>Boxee Remote</h1> -->
-        <div id="boxee_url">
-            <label>Boxee Host URL:</label>
-            <input id="host_url" type="text"></input>
-            <input id="host_url_submit" type="submit">Change Host</input>
-        </div>
+        
         <div id="status">
     <!--         <span id="form">Nothing</span> -->
         </div>
         <div id="controls">
             <table>
-                <tr>
-                    <td></td>
-                    <td><!--Controls--></td>
-                    <td></td>
-                    <td><br /></td>
-                    <td>Volume</td>
-                </tr>
                 <tr>
                     <td></td>
                     <td><img id="btn_up" src='up.png'></td>
@@ -38,7 +27,7 @@
                     <td><img id="btn_ok" src='ok.png'></td>
                     <td><img id="btn_right" src='right.png'></td>
                     <td><br /></td>
-                    <td><span id='volume'></span></td>
+                    <td>Volume: <span id='volume'></span></td>
                 </tr>
                 <tr>
                     <td><img id="btn_back" src='back.png'></td>
@@ -48,6 +37,11 @@
                     <td><img id="btn_volume_down" src='volume_down.png'></td>
                 </tr>
             </table>
+        </div>
+        <div id="boxee_url">
+            <p><label>Boxee Host URL:</label></p>
+            <input id="host_url" type="text"></input>
+            <input id="host_url_submit" type="submit" value="Change Host"></input>
         </div>
     </body>
 </html>

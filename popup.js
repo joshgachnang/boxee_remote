@@ -6,24 +6,41 @@ function setVolume(percent) {
 
 var volume = '';
 function getVolume() {
-    $.get(host + '/xbmcCmds/xbmcHttp?command=GetVolume', function(data) {
-        volume = data.substr(11).split('<')[0];
-//         $("#volume").text(volume);
-    });
-    console.log("return volume " + volume);
-
+    var result = null;
+    $.ajax({
+        url: host + '/xbmcCmds/xbmcHttp?command=GetVolume',
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        success: function(data) {
+            result = data;
+        } 
+     });
+    console.log("result: ", result);
+    volume = result.substr(11).split('<')[0];
+    console.log("volume: ", volume);
     return volume;
+    
+    
 }
 
 function setVolumeDisplay() {
     volume = getVolume();
+    console.log("Setting volume to: ", volume);
     $("#volume").text(volume);
+    
 }
 
 function volumeChange(percent) {
     volume = getVolume();
     console.log("Current volume: ", volume, " change: ", percent);
     new_volume = parseInt(volume) + parseInt(percent);
+    if (new_volume > 100) {
+        new_volume = 100;
+    }
+    else if (new_volume < 0) {
+        new_volume = 0;
+    }
     console.log("New volume: ", new_volume);
     $.get(host + '/xbmcCmds/xbmcHttp?command=SetVolume(' + new_volume + ')', function(data) {
         ;
@@ -123,13 +140,21 @@ host = "http://boxeebox:8800";
 console.log("Before document ready");
 $(document).ready(function() {
     console.log("Document ready, registering buttons");
-    setVolumeDisplay();
+    if (localStorage.getItem("boxee_url") === null) {
+        localStorage.setItem("boxee_url", "http://boxeebox:8800");
+    }
+    host = localStorage.getItem("boxee_url");
+    $("#host_url").val(host);
     $("#host_url_submit").click(function() {
         setHost();
     });
     // Register key presses as shortcuts
     $("#body").bind("keypress", function(e) {
-        if (e.keyCode == 119) {
+        console.log("keypress", e, e.target);
+        if (e.target == $("#input_url")) {
+            console.log("typing in input");
+        }
+        else if (e.keyCode == 119) {
             // w
             up();
         }
@@ -187,10 +212,7 @@ $(document).ready(function() {
     $("#btn_volume_down").click(function () {
         volumeChange(-10); 
     });
-    if (localStorage.getItem("boxee_url") === null) {
-        localStorage.setItem("boxee_url", "http://boxeebox:8800");
-    }
-    host = localStorage.getItem("boxee_url");
-    $("#host_url").val(host);
+    
+    setVolumeDisplay();
 
 });

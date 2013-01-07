@@ -23,3 +23,6 @@ img {
 #controls img:active {
     background:#4EC641;
 }
+p {
+    margin-bottom:0px;
+}
