@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Getting Started Extension's Popup</title>
+        <link rel="stylesheet" type="text/css" href="style.css"/>
+        <!-- JavaScript and HTML must be in separate files for security. -->
+        <script type="text/javascript" src="jquery-1.8.3.min.js"></script>
+        <script src="popup.js"></script>
+    </head>
+    <body  id="body">
+    <!--     <h1>Boxee Remote</h1> -->
+        <div id="boxee_url">
+            <input id="boxee_url_input" type="text"></input>
+        </div>
+        <div id="status">
+    <!--         <span id="form">Nothing</span> -->
+        </div>
+        <div id="controls">
+            <table>
+                <tr>
+                    <td></td>
+                    <td><!--Controls--></td>
+                    <td></td>
+                    <td><br /></td>
+                    <td>Volume</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img id="btn_up" src='up.png'></td>
+                    <td></td>
+                    <td><br /></td>
+                    <td><img id="btn_volume_up" src='volume_up.png'></td>
+                </tr>
+                <tr>
+                    <td><img id="btn_left" src='left.png'></td>
+                    <td><img id="btn_ok" src='ok.png'></td>
+                    <td><img id="btn_right" src='right.png'></td>
+                    <td><br /></td>
+                    <td><span id='volume'></span></td>
+                </tr>
+                <tr>
+                    <td><img id="btn_back" src='back.png'></td>
+                    <td><img id="btn_down" src='down.png'></td>
+                    <td></td>
+                    <td><br /></td>
+                    <td><img id="btn_volume_down" src='volume_down.png'></td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>

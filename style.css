@@ -1,0 +1,25 @@
+body {
+    min-width:357px;
+    overflow-x:hidden;
+}
+
+img {
+    margin:5px;
+    border:2px solid black;
+    vertical-align:middle;
+    width:75px;
+    height:75px;
+}
+
+#controls td {
+    width:56px;
+}
+#controls img {
+    width:32px;
+    height:32px;
+    background: #8EC641;
+}
+
+#controls img:active {
+    background:#4EC641;
+}
