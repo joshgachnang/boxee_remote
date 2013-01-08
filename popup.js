@@ -1,3 +1,5 @@
+debug = false
+
 function setVolume(percent) {
     $.get(host + '/xbmcCmds/xbmcHttp?command=SetVolume(' + percent + ')', function(data) {
         return true;
@@ -5,6 +7,7 @@ function setVolume(percent) {
 }
 
 var volume = '';
+// Returns current volume
 function getVolume() {
     var result = null;
     $.ajax({
@@ -16,24 +19,24 @@ function getVolume() {
             result = data;
         } 
      });
-    console.log("result: ", result);
+    if (debug == true) { console.log("result: ", result); }
     volume = result.substr(11).split('<')[0];
-    console.log("volume: ", volume);
+    if (debug == true) { console.log("volume: ", volume); }
     return volume;
-    
-    
 }
 
+// Displays current volume in popup
 function setVolumeDisplay() {
     volume = getVolume();
-    console.log("Setting volume to: ", volume);
+    if (debug == true) { console.log("Setting volume to: ", volume); }
     $("#volume").text(volume);
-    
 }
 
+// Takes a positive or negative int to change volume
+// Also updates volume display in popup
 function volumeChange(percent) {
     volume = getVolume();
-    console.log("Current volume: ", volume, " change: ", percent);
+    if (debug == true) { console.log("Current volume: ", volume, " change: ", percent); }
     new_volume = parseInt(volume) + parseInt(percent);
     if (new_volume > 100) {
         new_volume = 100;
@@ -41,12 +44,11 @@ function volumeChange(percent) {
     else if (new_volume < 0) {
         new_volume = 0;
     }
-    console.log("New volume: ", new_volume);
+    if (debug == true) { console.log("New volume: ", new_volume); }
     $.get(host + '/xbmcCmds/xbmcHttp?command=SetVolume(' + new_volume + ')', function(data) {
         ;
     });
     $("#volume").text(new_volume);
-//     setVolume(volume - percent);
 }
 
 function mute() {
@@ -79,14 +81,16 @@ function seekPercentage(percent) {
     });
 }
 
+// Get percent into TV/movie
 function getPercentage() {
     $.get(host + '/xbmcCmds/xbmcHttp?command=GetPercentage', function(data) {
         var percent = data.substr(11).split('<')[0];
-        console.log("Percent: ", percent);
+        if (debug == true) { console.log("Percent: ", percent); }
         return percent;
     });
 }
 
+// Button functions, simulates remote
 function up() {
     $.get(host + '/xbmcCmds/xbmcHttp?command=SendKey(270)', function(data) {
         return true;
@@ -129,17 +133,18 @@ function sendKey(key) {
     });
 }
 
+// Set the host variable and store it in HTML5 local storage
 function setHost() {
     host = $("#host_url").val()
     localStorage.setItem("boxee_url", host);
-    console.log("new host is: ", host);
+    if (debug == true) { console.log("new host is: ", host); }
 }
 
+// Default hostname and port
 host = "http://boxeebox:8800";
 
-console.log("Before document ready");
 $(document).ready(function() {
-    console.log("Document ready, registering buttons");
+    if (debug == true) { console.log("Document ready, registering buttons"); }
     if (localStorage.getItem("boxee_url") === null) {
         localStorage.setItem("boxee_url", "http://boxeebox:8800");
     }
@@ -148,13 +153,11 @@ $(document).ready(function() {
     $("#host_url_submit").click(function() {
         setHost();
     });
-    // Register key presses as shortcuts
+    // Register key presses as shortcuts, WASD for controls, RF for volume
+    // Q for back, enter for select
     $("#body").bind("keypress", function(e) {
-        console.log("keypress", e, e.target);
-        if (e.target == $("#input_url")) {
-            console.log("typing in input");
-        }
-        else if (e.keyCode == 119) {
+        if (debug == true) { console.log("keypress", e, e.target); }
+        if (e.keyCode == 119) {
             // w
             up();
         }
@@ -186,8 +189,10 @@ $(document).ready(function() {
             // f
             volumeChange("-10");
         }
-        console.log(e.keyCode, e);
+        if (debug == true) { console.log(e.keyCode, e); }
     });
+
+    // Register click functions for popup buttons
     $("#btn_up").on("click", function() {
         up();
     });
@@ -212,7 +217,6 @@ $(document).ready(function() {
     $("#btn_volume_down").click(function () {
         volumeChange(-10); 
     });
-    
+    // Show current volume in popup
     setVolumeDisplay();
-
 });
